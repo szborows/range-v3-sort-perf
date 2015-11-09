@@ -1,0 +1,30 @@
+#!/bin/bash
+
+mkdir -p gen
+cd $_
+python ../gen_data.py
+g++ -std=c++14 data1.cpp -o data1.o -Os -c
+g++ -std=c++14 data2.cpp -o data2.o -Os -c
+cd ..
+
+mkdir -p out
+
+g++ -std=c++14 stl.cpp gen/data1.o -O0 -o out/stl.O0
+g++ -std=c++14 stl.cpp gen/data1.o -O3 -o out/stl.O3
+g++ -std=c++14 stl.cpp gen/data1.o -Os -o out/stl.Os
+
+g++ -std=c++14 stl.cpp -O0 -o out/stl.O0.S -S
+g++ -std=c++14 stl.cpp -O3 -o out/stl.O3.S -S
+g++ -std=c++14 stl.cpp -Os -o out/stl.Os.S -S
+
+g++ -std=c++14 rng.cpp gen/data2.o -Irange-v3/include -O0 -o out/rng.O0
+g++ -std=c++14 rng.cpp gen/data2.o -Irange-v3/include -O3 -o out/rng.O3
+g++ -std=c++14 rng.cpp gen/data2.o -Irange-v3/include -Os -o out/rng.Os
+
+g++ -std=c++14 rng.cpp -Irange-v3/include -O0 -o out/rng.O0.S -S
+g++ -std=c++14 rng.cpp -Irange-v3/include -O3 -o out/rng.O3.S -S
+g++ -std=c++14 rng.cpp -Irange-v3/include -Os -o out/rng.Os.S -S
+
+g++ -std=c++14 bench.cpp gen/data1.o gen/data2.o -Irange-v3/include -O0 -o out/bench.O0
+g++ -std=c++14 bench.cpp gen/data1.o gen/data2.o -Irange-v3/include -O3 -o out/bench.O3
+g++ -std=c++14 bench.cpp gen/data1.o gen/data2.o -Irange-v3/include -Os -o out/bench.Os
